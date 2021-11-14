@@ -6,19 +6,21 @@ const Signup = (props) => {
   const [password, setPassword] = useState("");
 
   let handleSubmit = (event) => {
-      event.preventDefault();
-      fetch('http://localhost:3000/user/register')
-      method: 'POST'
-      body: JSON.stringify({user:{username: username, password: password}})
+    event.preventDefault();
+    fetch("http://localhost:3000/user/register", {
+      method: "POST",
+      body: JSON.stringify({
+        user: { username: username, passwordhash: password },
+      }),
       headers: new Headers({
-          'Content-Type': 'application/json'
-      })
+        "Content-Type": "application/json",
+      }),
+    })
       .then((response) => response.json())
-      .then(date => {
-          props.updateToken(data.sessionToken)
-      })
-
-  }
+      .then((data) => {
+        props.updateToken(data.sessionToken);
+      });
+  };
 
   return (
     <div>
@@ -26,11 +28,19 @@ const Signup = (props) => {
       <Form onSubmit={handleSubmit}>
         <FormGroup>
           <Label htmlFor="username">Username</Label>
-          <Input name="password" value={password} />
+          <Input
+            onChange={(e) => setUsername(e.target.value)}
+            name="username"
+            value={username}
+          />
         </FormGroup>
         <FormGroup>
-          <Label htmlFor="username">Password</Label>
-          <Input name="password" value={password} />
+          <Label htmlFor="password">Password</Label>
+          <Input
+            onChange={(e) => setPassword(e.target.value)}
+            name="password"
+            value={password}
+          />
         </FormGroup>
 
         <Button type="submit">Sign Up</Button>
